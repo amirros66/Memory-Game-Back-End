@@ -10,6 +10,7 @@ alembic = "*"
 fastapi = "*"
 sqlalchemy = "*"
 uvicorn = {extras = ["standard"], version = "*"}
+adjspecies3 = "*"
 
 [dev-packages]
 
