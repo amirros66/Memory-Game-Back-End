@@ -15,9 +15,10 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 
 
-def create_sequence(db: Session, sequence: schemas.InputSequenceCreate):
+def create_sequence(db: Session, sequence: schemas.InputSequenceCreate, user_id: int:
     db_sequence = models.InputSequence()
     db_sequence.value = sequence.value
+    db_sequence.user_id = user_id
     db.add(db_sequence)  
     db.commit()
     db.refresh(db_sequence)

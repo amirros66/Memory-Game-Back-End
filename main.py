@@ -36,5 +36,5 @@ def add_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 # submit input sequence 
 @app.post("/input_sequence/", response_model=schemas.InputSequenceBase)
-def add_sequence(input_sequence: schemas.InputSequenceCreate, db: Session = Depends(get_db)):
-    return create_sequence(db, input_sequence)
+def add_sequence(input_sequence: schemas.InputSequenceCreate, user_id: int,  db: Session = Depends(get_db)):
+    return create_sequence(db, input_sequence, user_id)
