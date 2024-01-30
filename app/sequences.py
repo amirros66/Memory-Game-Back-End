@@ -7,7 +7,7 @@ def generate_sequence(length: int):
     sequence = []
     for i in range(length):
         sequence.append(random.choice(possible_inputs))
-    return sequence
+    return ','.join(sequence)
 
 def add_sequence(db: Session):
     db_sequence = models.Sequence()
