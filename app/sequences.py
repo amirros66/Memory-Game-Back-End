@@ -9,12 +9,14 @@ def generate_sequence(length: int):
         sequence.append(random.choice(possible_inputs))
     return ','.join(sequence)
 
-def add_sequence(db: Session):
-    db_sequence = models.Sequence()
-    db.add(db_sequence)
+def add_sequences(db: Session):
+    db_sequence1 = models.Sequence(sequence = generate_sequence(4))
+    db_sequence2 = models.Sequence(sequence = generate_sequence(6))
+    db_sequence3 = models.Sequence(sequence = generate_sequence(8))
+    db.add(db_sequence1)
+    db.add(db_sequence2)
+    db.add(db_sequence3)
     db.commit()
-    db.refresh(db_sequence)
-    return db_sequence
 
 sequence = generate_sequence(4)
 print(sequence)
