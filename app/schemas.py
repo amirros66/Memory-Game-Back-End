@@ -7,3 +7,12 @@ class UserBase(BaseModel):
     
 class UserCreate(UserBase):
     pass
+
+
+
+
+class InputSequenceBase(BaseModel):
+    value: str
+    
+class InputSequenceCreate(InputSequenceBase):
+    pass

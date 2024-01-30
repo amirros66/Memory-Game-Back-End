@@ -2,7 +2,7 @@ from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from app.game import create_user
+from app.game import create_user, create_sequence
 
 from app import models, database, schemas
 
@@ -30,13 +30,13 @@ def get_db():
 # add user 
 @app.post("/users/", response_model=schemas.UserBase)
 def add_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    user = models.User()
-    db: Session - Depends(get_db)
-    
-    # check if game is active, if so add user to game
-    # active_game = db.query(models.Game).filter(models.Game.active == True).first()
-    
-    # if active_game:
-    #     user.game_id = active_game.id
-
     return create_user(db, user)
+
+
+
+# submit input sequence 
+@app.post("/input_sequence/", response_model=schemas.InputSequenceBase)
+def add_sequence(input_sequence: schemas.InputSequenceCreate, db: Session = Depends(get_db)):
+    input_sequence = models.InputSequence()
+    db: Session = Depends(get_db)
+    return create_sequence(db, input_sequence)
