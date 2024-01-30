@@ -30,15 +30,13 @@ def get_db():
 # add user 
 @app.post("/users/", response_model=schemas.UserBase)
 def add_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = models.User()
+    user = models.User()
+    db: Session - Depends(get_db)
     
     # check if game is active, if so add user to game
     # active_game = db.query(models.Game).filter(models.Game.active == True).first()
     
     # if active_game:
-    #     db_user.game_id = active_game.id
-        
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+    #     user.game_id = active_game.id
+
     return create_user(db, user)
