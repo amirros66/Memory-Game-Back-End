@@ -23,3 +23,13 @@ def create_sequence(db: Session, sequence: schemas.InputSequenceCreate, user_id:
     db.commit()
     db.refresh(db_sequence)
     return db_sequence
+
+
+
+#Create a new game
+def create_game(db: Session, game_create: schemas.GameCreate):
+    db_game = models.Game(active=game_create.active)
+    db.add(db_game)
+    db.commit()
+    db.refresh(db_game)
+    return db_game
