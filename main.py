@@ -4,8 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.game import create_user, create_sequence, create_game
 from app.sequences import add_sequences
+from app.scores import get_all_scores_by_round
 
-from app import models, database, schemas
+from app import models, database, schemas, scores
 
 app = FastAPI()
 
@@ -48,3 +49,13 @@ def create_new_game(db: Session = Depends(get_db)):
     new_user = create_user(db=db, game_id=new_game.id)
     new_sequences = add_sequences(db=db)
     return {"game_id": new_game.id, "user_id": new_user.id, "player_name": new_user.player_name, "sequences": new_sequences}
+
+
+
+#Get score for 1 round
+
+@app.get("/scores/round/{display_sequence_id}", response_model=schemas.RoundScores)
+def read_scores_by_round(display_sequence_id: int, db: Session = Depends(get_db)):
+    scores_data = scores.get_all_scores_by_round(db, display_sequence_id=display_sequence_id)
+    all_scores = [schemas.UserScore(user_id=score.user_id, correct_guesses=score.correct_guesses, incorrect_guesses=score.incorrect_guesses) for score in scores_data]
+    return schemas.RoundScores(round_id=display_sequence_id, scores=all_scores)
