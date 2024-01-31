@@ -3,6 +3,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.game import create_user, create_sequence, create_game
+from app.sequences import add_sequences, get_sequences
 
 from app import models, database, schemas
 
@@ -45,4 +46,5 @@ def add_sequence(input_sequence: schemas.InputSequenceCreate, user_id: int,  db:
 def create_new_game(db: Session = Depends(get_db)):
     new_game = create_game(db=db)
     new_user = create_user(db=db, game_id=new_game.id)
-    return {"game_id": new_game.id, "user_id": new_user.id, "player_name": new_user.player_name}
+    new_sequences = add_sequences(db=db)
+    return {"game_id": new_game.id, "user_id": new_user.id, "player_name": new_user.player_name, "sequences": new_sequences}

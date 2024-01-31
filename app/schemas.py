@@ -9,7 +9,9 @@ class UserCreate(UserBase):
     pass
 
 
-
+class DisplaySequenceBase(BaseModel):
+    id: int
+    value: str
 
 class InputSequenceBase(BaseModel):
     value: str
@@ -30,3 +32,4 @@ class NewGame(BaseModel):
     game_id: int
     user_id: int
     player_name: str
+    sequences: list[DisplaySequenceBase]
