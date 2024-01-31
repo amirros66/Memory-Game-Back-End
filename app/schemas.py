@@ -57,3 +57,9 @@ class Score(ScoreBase):
     user_id: int
     display_sequence_id: int
     input_sequence_id: int
+
+class TotalScore(BaseModel):
+    user_id: int
+    player_name: str
+    total_correct_guesses: int
+    total_incorrect_guesses: int
