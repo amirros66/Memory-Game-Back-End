@@ -29,8 +29,8 @@ def get_db():
 
 # add user 
 @app.post("/users/", response_model=schemas.UserBase)
-def add_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    return create_user(db, user)
+def add_user(user: schemas.UserCreate, game_id: int, db: Session = Depends(get_db)):
+    return create_user(db, user, game_id)
 
 
 

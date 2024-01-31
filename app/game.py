@@ -1,14 +1,15 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 
-def create_user(db: Session, user: schemas.UserCreate):
+def create_user(db: Session, game_id: int, user: schemas.UserCreate):
     db_user = models.User()
     db.add(db_user)
-        # check if game is active, if so add user to game
-    # active_game = db.query(models.Game).filter(models.Game.active == True).first()
     
-    # if active_game:
-    #     user.game_id = active_game.id
+    active_game = db.query(models.Game).filter(models.Game.active == True).first()
+    
+    if active_game:
+        db_user.game_id = active_game.id
+        
     db.commit()
     db.refresh(db_user)
     return db_user
