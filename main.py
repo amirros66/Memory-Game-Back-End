@@ -3,6 +3,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.game import create_user, create_sequence, create_game
+from app.scores import calculate_score, store_score
 from app.sequences import add_sequences
 from app.scores import get_all_scores_by_round
 
@@ -37,9 +38,12 @@ def add_user(game_id: int, db: Session = Depends(get_db)):
 
 
 # submit input sequence 
-@app.post("/input_sequence/", response_model=schemas.InputSequenceBase)
+@app.post("/input_sequence/", response_model=schemas.InputSequence)
 def add_sequence(input_sequence: schemas.InputSequenceCreate, user_id: int,  display_sequence_id: int, db: Session = Depends(get_db)):
-    return create_sequence(db, input_sequence, user_id, display_sequence_id)
+    new_input_sequence = create_sequence(db, input_sequence, user_id, display_sequence_id)
+    round_score = calculate_score(db, new_input_sequence)
+    store_score(db, round_score, user_id, display_sequence_id, new_input_sequence.id)
+    return new_input_sequence
 
 
 #Create a game
