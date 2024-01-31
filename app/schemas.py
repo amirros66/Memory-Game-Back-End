@@ -15,7 +15,10 @@ class DisplaySequenceBase(BaseModel):
 
 class InputSequenceBase(BaseModel):
     value: str
-    
+
+class InputSequence(BaseModel):
+    id: int
+    value: str
 class InputSequenceCreate(InputSequenceBase):
     pass
 
