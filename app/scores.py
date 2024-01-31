@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
+from sqlalchemy.orm import Session
+from . import models, schemas
 
 def calculate_score(db: Session, input_sequence: schemas.InputSequence):
     #get the display sequence
@@ -41,3 +43,41 @@ def get_all_scores_by_round(db: Session, display_sequence_id: int):
                .all()
 
     return scores
+
+#Function to retrieve total score of all rounds for each user
+def calculate_total_scores(db: Session, game_id: int):
+    total_scores = []
+    
+    # Get all distinct user_ids for the given game_id
+    user_ids = db.query(models.Score.user_id)\
+                 .filter(models.Score.display_sequence_id == game_id)\
+                 .distinct()\
+                 .all()
+    
+    for row in user_ids:
+        user_id = row.user_id  # Extract the user_id from the Row object
+
+        # Get the user's name
+        user = db.query(models.User)\
+                 .filter(models.User.id == user_id)\
+                 .first()
+        
+        # Get the total scores for the user
+        scores = db.query(models.Score)\
+                   .filter(models.Score.user_id == user_id)\
+                   .all()
+        
+        # Calculate the total incorrect_guesses and correct_guesses
+        total_incorrect_guesses = sum(score.incorrect_guesses for score in scores)
+        total_correct_guesses = sum(score.correct_guesses for score in scores)
+        
+        # Append the user's information and total scores to the list
+        total_scores.append({
+            'user_id': user_id,
+            'player_name': user.player_name,
+            'total_incorrect_guesses': total_incorrect_guesses,
+            'total_correct_guesses': total_correct_guesses
+        })
+    
+    return total_scores
+
