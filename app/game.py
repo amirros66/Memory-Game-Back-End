@@ -15,11 +15,12 @@ def create_user(db: Session, game_id: int):
     return db_user
 
 
-
-def create_sequence(db: Session, sequence: schemas.InputSequenceCreate, user_id: int):
+# add input sequence 
+def create_sequence(db: Session, sequence: schemas.InputSequenceCreate, user_id: int, display_sequence_id: int):
     db_sequence = models.InputSequence()
     db_sequence.value = sequence.value
     db_sequence.user_id = user_id
+    db_sequence.display_sequence_id = display_sequence_id
     db.add(db_sequence)  
     db.commit()
     db.refresh(db_sequence)

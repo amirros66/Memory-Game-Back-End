@@ -14,6 +14,7 @@ class User(Base):
     
     game = relationship("Game", back_populates="user")
     input_sequence = relationship("InputSequence", back_populates="user")
+    score = relationship("Score", back_populates="user")
     
 class Game(Base):
     __tablename__ = "games"
@@ -30,6 +31,7 @@ class DisplaySequence(Base):
     value= Column(String)
     
     input_sequence = relationship("InputSequence", back_populates="display_sequence")
+    score = relationship("Score", back_populates="display_sequence")
     
 class InputSequence(Base):
     __tablename__ = "input_sequences"
@@ -42,7 +44,7 @@ class InputSequence(Base):
     
     user = relationship("User", back_populates="input_sequence")
     display_sequence = relationship("DisplaySequence", back_populates="input_sequence")
-
+    score = relationship("Score", back_populates="input_sequence")
 
 #For overall scores at Game over
 class Score (Base):
