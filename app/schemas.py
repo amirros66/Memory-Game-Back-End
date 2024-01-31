@@ -18,10 +18,10 @@ class InputSequenceCreate(InputSequenceBase):
     pass
 
 
+class GameBase(BaseModel):
+    id: int
+
+
 class Game(BaseModel):
     id: int
-    active: bool
-
-
-class GameCreate(BaseModel):
     active: bool
