@@ -3,7 +3,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.game import create_user, create_sequence, create_game
-from app.sequences import add_sequences, get_sequences
+from app.sequences import add_sequences
 
 from app import models, database, schemas
 
