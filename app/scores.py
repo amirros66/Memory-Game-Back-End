@@ -17,7 +17,7 @@ def calculate_score(db: Session, input_sequence: schemas.InputSequence):
         else:
             incorrect_guesses += 1
     #return the score
-    return {"correct_guesses": correct_guesses, "incorrect_guesses": incorrect_guesses}
+    return schemas.ScoreBase(correct_guesses=correct_guesses, incorrect_guesses=incorrect_guesses)
 
 def store_score(db: Session, score: schemas.ScoreBase, user_id: int, display_sequence_id: int, input_sequence_id: int):
     db_score = models.Score()
