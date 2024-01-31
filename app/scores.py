@@ -30,3 +30,14 @@ def store_score(db: Session, score: schemas.ScoreBase, user_id: int, display_seq
     db.commit()
     db.refresh(db_score)
     return db_score
+
+#Function to retrieve the results of each round
+#Return all of the user's scores for 1 round
+#1 round is a display sequence id. Round 1 = display sequence id 1
+
+def get_all_scores_by_round(db: Session, display_sequence_id: int):
+    scores = db.query(models.Score)\
+               .filter(models.Score.display_sequence_id == display_sequence_id)\
+               .all()
+
+    return scores

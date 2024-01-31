@@ -37,6 +37,17 @@ class NewGame(BaseModel):
     player_name: str
     sequences: list[DisplaySequenceBase]
 
+
+#Scores schemas
+class UserScore(BaseModel):
+    user_id: int
+    correct_guesses: int
+    incorrect_guesses: int
+
+class RoundScores(BaseModel):
+    round_id: int
+    scores: list[UserScore]
+
 class ScoreBase(BaseModel):
     correct_guesses: int
     incorrect_guesses: int
