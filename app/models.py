@@ -9,8 +9,6 @@ class User(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     player_name = Column(String, unique=True, default=random_adjspecies)
-    correct_guesses = Column(Integer)
-    incorrect_guesses = Column(Integer)
     
     game_id = Column(Integer, ForeignKey("games.id"))
     
