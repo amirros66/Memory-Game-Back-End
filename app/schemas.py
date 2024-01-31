@@ -58,8 +58,16 @@ class Score(ScoreBase):
     display_sequence_id: int
     input_sequence_id: int
 
+
+
+#Lobby user schemas
+class LobbyUser(BaseModel):
+    user_id: int
+    player_name: str
+
 class TotalScore(BaseModel):
     user_id: int
     player_name: str
     total_correct_guesses: int
     total_incorrect_guesses: int
+

@@ -2,12 +2,11 @@ from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from app.game import create_user, create_sequence, create_game
-from app.scores import calculate_score, store_score
+from app.game import create_user, create_sequence, create_game, get_users_in_game
+from app.scores import calculate_score, store_score, get_all_scores_by_round
 from app.sequences import add_sequences
-from app.scores import get_all_scores_by_round
 
-from app import models, database, schemas, scores
+from app import models, database, schemas, scores, game
 
 app = FastAPI()
 
@@ -64,6 +63,14 @@ def read_scores_by_round(display_sequence_id: int, db: Session = Depends(get_db)
     all_scores = [schemas.UserScore(user_id=score.user_id, correct_guesses=score.correct_guesses, incorrect_guesses=score.incorrect_guesses) for score in scores_data]
     return schemas.RoundScores(round_id=display_sequence_id, scores=all_scores)
 
+  
 @app.get("/scores/total/{game_id}" , response_model=List[schemas.TotalScore])
 def read_scores_by_game(game_id: int, db: Session = Depends(get_db)):
     return scores.calculate_total_scores(db, game_id=game_id)
+
+#Get users for lobby
+@app.get("/game/{game_id}/users", response_model=list[schemas.LobbyUser])
+def read_users_for_game_id(game_id: int, db: Session = Depends(get_db)):
+    users = game.get_users_in_game(db, game_id=game_id)
+    return [schemas.LobbyUser(user_id=user.id, player_name=user.player_name) for user in users]
+

@@ -37,3 +37,14 @@ def create_game(db: Session):
     return db_game
 
 
+
+
+#GET /users endpoint for use in the lobby screen
+# Request parameter should be game_id
+# No other information required in the request body
+# Response should return a list of users containing user_id and player_name
+
+def get_users_in_game(db: Session, game_id: int):
+    return db.query(models.User)\
+             .filter(models.User.game_id == game_id)\
+             .all()
