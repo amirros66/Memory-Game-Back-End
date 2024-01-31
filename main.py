@@ -41,6 +41,6 @@ def add_sequence(input_sequence: schemas.InputSequenceCreate, user_id: int,  db:
 
 
 #Create a game
-@app.post("/game", response_model=schemas.GameCreate)
+@app.post("/game", response_model=schemas.GameBase)
 def create_new_game(db: Session = Depends(get_db)):
     return create_game(db=db)
