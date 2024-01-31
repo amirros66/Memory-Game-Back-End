@@ -25,3 +25,8 @@ class GameBase(BaseModel):
 class Game(BaseModel):
     id: int
     active: bool
+
+class NewGame(BaseModel):
+    game_id: int
+    user_id: int
+    player_name: str
