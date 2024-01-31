@@ -36,3 +36,13 @@ class NewGame(BaseModel):
     user_id: int
     player_name: str
     sequences: list[DisplaySequenceBase]
+
+class ScoreBase(BaseModel):
+    correct_guesses: int
+    incorrect_guesses: int
+
+class Score(ScoreBase):
+    id: int
+    user_id: int
+    display_sequence_id: int
+    input_sequence_id: int
