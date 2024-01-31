@@ -14,6 +14,4 @@ def add_sequences(db: Session):
         db_sequence = models.DisplaySequence(value = generate_sequence(x))
         db.add(db_sequence)
         db.commit()
-
-def get_sequences(db: Session):
     return db.query(models.DisplaySequence).all()
