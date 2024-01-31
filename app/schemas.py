@@ -15,7 +15,10 @@ class DisplaySequenceBase(BaseModel):
 
 class InputSequenceBase(BaseModel):
     value: str
-    
+
+class InputSequence(BaseModel):
+    id: int
+    value: str
 class InputSequenceCreate(InputSequenceBase):
     pass
 
@@ -33,7 +36,6 @@ class NewGame(BaseModel):
     user_id: int
     player_name: str
     sequences: list[DisplaySequenceBase]
-
 
 
 #Scores schemas
@@ -57,7 +59,15 @@ class Score(ScoreBase):
     input_sequence_id: int
 
 
+
 #Lobby user schemas
 class LobbyUser(BaseModel):
     user_id: int
     player_name: str
+
+class TotalScore(BaseModel):
+    user_id: int
+    player_name: str
+    total_correct_guesses: int
+    total_incorrect_guesses: int
+
