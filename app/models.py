@@ -19,7 +19,7 @@ class Game(Base):
     __tablename__ = "games"
     
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    active = Column(Boolean)
+    active = Column(Boolean, default=True)
     
     user = relationship("User", back_populates="game")
     
