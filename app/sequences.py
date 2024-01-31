@@ -10,13 +10,10 @@ def generate_sequence(length: int):
     return ','.join(sequence)
 
 def add_sequences(db: Session):
-    db_sequence1 = models.Sequence(sequence = generate_sequence(4))
-    db_sequence2 = models.Sequence(sequence = generate_sequence(6))
-    db_sequence3 = models.Sequence(sequence = generate_sequence(8))
-    db.add(db_sequence1)
-    db.add(db_sequence2)
-    db.add(db_sequence3)
-    db.commit()
+    for x in range(4,10,2):
+        db_sequence = models.DisplaySequence(value = generate_sequence(x))
+        db.add(db_sequence)
+        db.commit()
 
-sequence = generate_sequence(4)
-print(sequence)
+def get_sequences(db: Session):
+    return db.query(models.DisplaySequence).all()
