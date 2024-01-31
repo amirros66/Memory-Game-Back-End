@@ -28,8 +28,8 @@ def create_sequence(db: Session, sequence: schemas.InputSequenceCreate, user_id:
 
 
 #Create a new game
-def create_game(db: Session, game_create: schemas.GameCreate):
-    db_game = models.Game(active=game_create.active)
+def create_game(db: Session):
+    db_game = models.Game()
     db.add(db_game)
     db.commit()
     db.refresh(db_game)
