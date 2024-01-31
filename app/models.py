@@ -42,3 +42,27 @@ class InputSequence(Base):
     
     user = relationship("User", back_populates="input_sequence")
     display_sequence = relationship("DisplaySequence", back_populates="input_sequence")
+
+
+#For overall scores at Game over
+class Score (Base):
+    __tablename__ = "scores"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
+    correct_guesses = Column(Integer)
+    incorrect_guesses = Column(Integer)
+
+    #Foreign Keys
+    #user:
+    user_id = Column(Integer, ForeignKey("users.id"))
+    #round:
+    display_sequence_id = Column(Integer, ForeignKey("display_sequences.id"))  
+    #Do we need this? 
+    input_sequence_id = Column(Integer, ForeignKey("input_sequences.id"))
+
+
+    #Relationships
+    user = relationship("User", back_populates="score")
+    display_sequence = relationship("DisplaySequence", back_populates="score")
+    input_sequence = relationship("InputSequence", back_populates="score")
+
