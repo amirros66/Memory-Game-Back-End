@@ -55,3 +55,9 @@ class Score(ScoreBase):
     user_id: int
     display_sequence_id: int
     input_sequence_id: int
+
+
+#Lobby user schemas
+class LobbyUser(BaseModel):
+    user_id: int
+    player_name: str
