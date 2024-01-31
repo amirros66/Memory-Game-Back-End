@@ -63,3 +63,7 @@ def read_scores_by_round(display_sequence_id: int, db: Session = Depends(get_db)
     scores_data = scores.get_all_scores_by_round(db, display_sequence_id=display_sequence_id)
     all_scores = [schemas.UserScore(user_id=score.user_id, correct_guesses=score.correct_guesses, incorrect_guesses=score.incorrect_guesses) for score in scores_data]
     return schemas.RoundScores(round_id=display_sequence_id, scores=all_scores)
+
+@app.get("/scores/total/{game_id}" , response_model=List[schemas.TotalScore])
+def read_scores_by_game(game_id: int, db: Session = Depends(get_db)):
+    return scores.calculate_total_scores(db, game_id=game_id)
