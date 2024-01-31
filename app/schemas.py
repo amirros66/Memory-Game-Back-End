@@ -36,20 +36,6 @@ class NewGame(BaseModel):
 
 
 
-
-#Aldrin's schemas for scores
-#When responding with data - use either of these
-class ScoreBase(BaseModel):
-    correct_guesses: int
-    incorrect_guesses: int
-
-class Score(ScoreBase):
-    id: int
-    user_id: int
-    display_sequence_id: int
-    input_sequence_id: int
-
-
 #Scores schemas
 class UserScore(BaseModel):
     user_id: int
@@ -59,3 +45,13 @@ class UserScore(BaseModel):
 class RoundScores(BaseModel):
     round_id: int
     scores: list[UserScore]
+
+class ScoreBase(BaseModel):
+    correct_guesses: int
+    incorrect_guesses: int
+
+class Score(ScoreBase):
+    id: int
+    user_id: int
+    display_sequence_id: int
+    input_sequence_id: int
