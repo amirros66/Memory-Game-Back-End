@@ -2,7 +2,7 @@ from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from app.game import create_user, create_sequence, create_game, get_users_in_game, reset_game_data, delete_user, delete_game
+from app.game import create_user, create_sequence, create_game, get_users_in_game, reset_game_data
 from app.scores import calculate_score, store_score, get_all_scores_by_round
 from app.sequences import add_sequences
 
