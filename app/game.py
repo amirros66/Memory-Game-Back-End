@@ -36,7 +36,9 @@ def create_game(db: Session):
     db.refresh(db_game)
     return db_game
 
-
+#Get first active game
+def get_active_game(db: Session):
+    return db.query(models.Game).filter(models.Game.active == True).first()
 
 
 #GET /users endpoint for use in the lobby screen
