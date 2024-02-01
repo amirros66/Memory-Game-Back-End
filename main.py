@@ -44,6 +44,10 @@ def add_sequence(input_sequence: schemas.InputSequenceCreate, user_id: int,  dis
     store_score(db, round_score, user_id, display_sequence_id, new_input_sequence.id)
     return new_input_sequence
 
+#Get first active game
+@app.get("/game/active", response_model=schemas.GameBase)
+def read_active_game(db: Session = Depends(get_db)):
+    return game.get_active_game(db)
 
 #Create a game
 @app.post("/game", response_model=schemas.NewGame)
