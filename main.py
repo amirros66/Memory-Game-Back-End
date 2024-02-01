@@ -30,7 +30,7 @@ def get_db():
         
 
 # add user 
-@app.post("/users/", response_model=schemas.UserBase)
+@app.post("/users/{game_id}", response_model=schemas.UserBase)
 def add_user(game_id: int, db: Session = Depends(get_db)):
     return create_user(db, game_id)
 
