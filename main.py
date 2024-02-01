@@ -37,7 +37,7 @@ def add_user(game_id: int, db: Session = Depends(get_db)):
 
 
 # submit input sequence 
-@app.post("/input_sequence/", response_model=schemas.InputSequence)
+@app.post("/input_sequence", response_model=schemas.InputSequence)
 def add_sequence(input_sequence: schemas.InputSequenceCreate, user_id: int,  display_sequence_id: int, db: Session = Depends(get_db)):
     new_input_sequence = create_sequence(db, input_sequence, user_id, display_sequence_id)
     round_score = calculate_score(db, new_input_sequence)
