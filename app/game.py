@@ -44,7 +44,27 @@ def get_users_in_game(db: Session, game_id: int):
              .all()
 
 
-#Delete all entries for game reset
+#Delete all entries for game reset 
+
+# def reset_game_data(db: Session, game_id: int):
+#     # Delete Scores
+#     db.query(models.Score).filter(models.Score.user_id.in_(
+#         db.query(models.User.id).filter(models.User.game_id == game_id)
+#     )).delete(synchronize_session='fetch')
+
+#     # Delete Input Sequences
+#     db.query(models.InputSequence).filter(models.InputSequence.display_sequence_id.in_(
+#         db.query(models.DisplaySequence.id)
+#     )).delete(synchronize_session='fetch')
+
+#     # Delete Display Sequences
+#     db.query(models.DisplaySequence).delete(synchronize_session='fetch')
+
+#     # Delete Users
+#     db.query(models.User).filter(models.User.game_id == game_id).delete(synchronize_session='fetch')
+
+#     db.commit()
+
 
 def reset_game_data(db: Session, game_id: int):
     # Delete Scores
@@ -63,4 +83,13 @@ def reset_game_data(db: Session, game_id: int):
     # Delete Users
     db.query(models.User).filter(models.User.game_id == game_id).delete(synchronize_session='fetch')
 
-    db.commit()
+    # Delete the Game
+    game = db.query(models.Game).filter(models.Game.id == game_id).first()
+    if game:
+        db.delete(game)
+        db.commit()
+        return True  
+    else:
+        db.rollback()  
+        return False 
+
