@@ -45,12 +45,12 @@ def get_all_scores_by_round(db: Session, display_sequence_id: int):
     return scores
 
 #Function to retrieve total score of all rounds for each user
-def calculate_total_scores(db: Session, game_id: int):
+def calculate_total_scores(db: Session, display_sequence_id: int):
     total_scores = []
     
-    # Get all distinct user_ids for the given game_id
+    # Get all distinct user_ids for the given display_sequence_id
     user_ids = db.query(models.Score.user_id)\
-                 .filter(models.Score.display_sequence_id == game_id)\
+                 .filter(models.Score.display_sequence_id == display_sequence_id)\
                  .distinct()\
                  .all()
     

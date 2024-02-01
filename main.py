@@ -78,9 +78,9 @@ def read_scores_by_round(display_sequence_id: int, db: Session = Depends(get_db)
     return schemas.RoundScores(round_id=display_sequence_id, scores=all_scores)
 
   
-@app.get("/scores/total/{game_id}" , response_model=List[schemas.TotalScore])
-def read_scores_by_game(game_id: int, db: Session = Depends(get_db)):
-    return scores.calculate_total_scores(db, game_id=game_id)
+@app.get("/scores/total/{display_sequence_id}" , response_model=List[schemas.TotalScore])
+def read_scores_by_game(display_sequence_id: int, db: Session = Depends(get_db)):
+    return scores.calculate_total_scores(db, display_sequence_id=display_sequence_id)
 
 #Get users for lobby
 @app.get("/game/{game_id}/users", response_model=list[schemas.LobbyUser])
