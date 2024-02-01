@@ -5,7 +5,7 @@ def create_user(db: Session, game_id: int):
     db_user = models.User()
     db.add(db_user)
     
-    active_game = db.query(models.Game).filter(models.Game.active == True).first()
+    active_game = db.query(models.Game).filter(models.Game.id == game_id).first()
     
     if active_game:
         db_user.game_id = active_game.id
