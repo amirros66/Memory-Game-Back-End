@@ -2,7 +2,7 @@ from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from app.game import create_user, create_sequence, create_game, get_users_in_game
+from app.game import create_user, create_sequence, create_game, get_users_in_game, reset_game_data
 from app.scores import calculate_score, store_score, get_all_scores_by_round
 from app.sequences import add_sequences
 
@@ -74,3 +74,8 @@ def read_users_for_game_id(game_id: int, db: Session = Depends(get_db)):
     users = game.get_users_in_game(db, game_id=game_id)
     return [schemas.LobbyUser(user_id=user.id, player_name=user.player_name) for user in users]
 
+#Delete entries / reset game (by ID)
+@app.delete("/game-over/{game_id}")
+def game_over_reset(game_id: int, db: Session = Depends(get_db)):
+    reset_game_data(db, game_id)
+    return {"message": "Game reset successfully"}
