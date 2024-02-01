@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.game import create_user, create_sequence, create_game, get_users_in_game, reset_game_data, get_display_sequences
 from app.scores import calculate_score, store_score, get_all_scores_by_round
@@ -37,12 +38,17 @@ def add_user(game_id: int, db: Session = Depends(get_db)):
 
 
 # submit input sequence 
-@app.post("/input_sequence", response_model=schemas.InputSequence)
+@app.post("/input", response_model=schemas.InputSequence)
 def add_sequence(input_sequence: schemas.InputSequenceCreate, user_id: int,  display_sequence_id: int, db: Session = Depends(get_db)):
-    new_input_sequence = create_sequence(db, input_sequence, user_id, display_sequence_id)
-    round_score = calculate_score(db, new_input_sequence)
-    store_score(db, round_score, user_id, display_sequence_id, new_input_sequence.id)
-    return new_input_sequence
+    try:
+        print(f"Received request with input_sequence={input_sequence}, user_id={user_id}, display_sequence_id={display_sequence_id}")
+        new_input_sequence = create_sequence(db, input_sequence, user_id, display_sequence_id)
+        round_score = calculate_score(db, new_input_sequence)
+        store_score(db, round_score, user_id, display_sequence_id, new_input_sequence.id)
+        return new_input_sequence
+    except Exception as e:
+        print(f"Error processing request: {e}")
+        return JSONResponse(status_code=422, content={"detail": "Validation error"})
 
 #Get first active game
 @app.get("/game/active", response_model=schemas.GameBase)
