@@ -9,8 +9,8 @@ psycopg2-binary = "*"
 alembic = "*"
 fastapi = "*"
 sqlalchemy = "*"
-uvicorn = {extras = ["standard"], version = "*"}
 adjspecies3 = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 

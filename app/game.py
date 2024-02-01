@@ -39,17 +39,12 @@ def create_game(db: Session):
 
 
 
-#Get users endpoint for use in the lobby screen
+#GET /users endpoint for use in the lobby screen
+# Request parameter should be game_id
+# No other information required in the request body
+# Response should return a list of users containing user_id and player_name
 
 def get_users_in_game(db: Session, game_id: int):
     return db.query(models.User)\
              .filter(models.User.game_id == game_id)\
              .all()
-
-#Delete entries in DB to reset the game
-#Posts:
-# Display sequence
-# Game ID
-# Input sequences 
-# Scores 
-# Users
