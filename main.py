@@ -90,6 +90,6 @@ def game_over_reset(game_id: int, db: Session = Depends(get_db)):
 
 
 # Get display sequences
-@app.get("/display-sequences/", response_model=List[schemas.DisplaySequence])
+@app.get("/display-sequences", response_model=List[schemas.DisplaySequence])
 def read_display_sequences(game_id: int, db: Session = Depends(get_db)):
     return get_display_sequences(db, game_id)
