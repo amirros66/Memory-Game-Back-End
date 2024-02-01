@@ -40,13 +40,35 @@ def create_game(db: Session):
 def get_active_game(db: Session):
     return db.query(models.Game).filter(models.Game.active == True).first()
 
-
-#GET /users endpoint for use in the lobby screen
-# Request parameter should be game_id
-# No other information required in the request body
-# Response should return a list of users containing user_id and player_name
-
 def get_users_in_game(db: Session, game_id: int):
     return db.query(models.User)\
              .filter(models.User.game_id == game_id)\
              .all()
+
+def reset_game_data(db: Session, game_id: int):
+    # Delete Scores
+    db.query(models.Score).filter(models.Score.user_id.in_(
+        db.query(models.User.id).filter(models.User.game_id == game_id)
+    )).delete(synchronize_session='fetch')
+
+    # Delete Input Sequences
+    db.query(models.InputSequence).filter(models.InputSequence.display_sequence_id.in_(
+        db.query(models.DisplaySequence.id)
+    )).delete(synchronize_session='fetch')
+
+    # Delete Display Sequences
+    db.query(models.DisplaySequence).delete(synchronize_session='fetch')
+
+    # Delete Users
+    db.query(models.User).filter(models.User.game_id == game_id).delete(synchronize_session='fetch')
+
+    # Delete the Game
+    game = db.query(models.Game).filter(models.Game.id == game_id).first()
+    if game:
+        db.delete(game)
+        db.commit()
+        return True  
+    else:
+        db.rollback()  
+        return False 
+
