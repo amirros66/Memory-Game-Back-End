@@ -9,9 +9,9 @@ def generate_sequence(length: int):
         sequence.append(random.choice(possible_inputs))
     return ','.join(sequence)
 
-def add_sequences(db: Session):
+def add_sequences(db: Session, game_id: int):
     for x in range(4,10,2):
-        db_sequence = models.DisplaySequence(value = generate_sequence(x))
+        db_sequence = models.DisplaySequence(value = generate_sequence(x), game_id = game_id)
         db.add(db_sequence)
         db.commit()
     return db.query(models.DisplaySequence).all()

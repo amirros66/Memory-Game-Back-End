@@ -2,7 +2,7 @@ from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from app.game import create_user, create_sequence, create_game, get_users_in_game, reset_game_data
+from app.game import create_user, create_sequence, create_game, get_users_in_game, reset_game_data, get_display_sequences
 from app.scores import calculate_score, store_score, get_all_scores_by_round
 from app.sequences import add_sequences
 
@@ -58,7 +58,7 @@ def read_active_game(db: Session = Depends(get_db)):
 def create_new_game(db: Session = Depends(get_db)):
     new_game = create_game(db=db)
     new_user = create_user(db=db, game_id=new_game.id)
-    new_sequences = add_sequences(db=db)
+    new_sequences = add_sequences(db=db, game_id=new_game.id)
     return {"game_id": new_game.id, "user_id": new_user.id, "player_name": new_user.player_name, "sequences": new_sequences}
 
 
@@ -89,3 +89,7 @@ def game_over_reset(game_id: int, db: Session = Depends(get_db)):
     return {"message": "Game reset successfully"}
 
 
+# Get display sequences
+@app.get("/display-sequences/", response_model=List[schemas.DisplaySequence])
+def read_display_sequences(game_id: int, db: Session = Depends(get_db)):
+    return get_display_sequences(db, game_id)
