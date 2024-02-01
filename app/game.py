@@ -72,3 +72,9 @@ def reset_game_data(db: Session, game_id: int):
         db.rollback()  
         return False 
 
+
+# get display sequences
+def get_display_sequences(db: Session, game_id: int):
+    return db.query(models.DisplaySequence)\
+             .filter(models.DisplaySequence.game_id == game_id)\
+             .all()

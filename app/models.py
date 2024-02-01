@@ -23,6 +23,8 @@ class Game(Base):
     active = Column(Boolean, default=True)
     
     user = relationship("User", back_populates="game")
+    display_sequence = relationship("DisplaySequence", back_populates="game")
+    input_sequence = relationship("InputSequence", back_populates="game")
     
 class DisplaySequence(Base):
     __tablename__ = "display_sequences"
@@ -30,8 +32,11 @@ class DisplaySequence(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     value= Column(String)
     
+    game_id = Column(Integer, ForeignKey("games.id"))
+
     input_sequence = relationship("InputSequence", back_populates="display_sequence")
     score = relationship("Score", back_populates="display_sequence")
+    game = relationship("Game", back_populates="display_sequence")
     
 class InputSequence(Base):
     __tablename__ = "input_sequences"
@@ -41,10 +46,12 @@ class InputSequence(Base):
     
     user_id = Column(Integer, ForeignKey("users.id"))
     display_sequence_id = Column(Integer, ForeignKey("display_sequences.id"))   
+    game_id = Column(Integer, ForeignKey("games.id"))
     
     user = relationship("User", back_populates="input_sequence")
     display_sequence = relationship("DisplaySequence", back_populates="input_sequence")
     score = relationship("Score", back_populates="input_sequence")
+    game= relationship("Game", back_populates="input_sequence")
 
 #For overall scores at Game over
 class Score (Base):

@@ -71,3 +71,9 @@ class TotalScore(BaseModel):
     total_correct_guesses: int
     total_incorrect_guesses: int
 
+
+
+# Display sequence schemas
+class DisplaySequence(BaseModel):
+    id: int
+    value: str
