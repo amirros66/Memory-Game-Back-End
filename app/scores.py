@@ -44,40 +44,28 @@ def get_all_scores_by_round(db: Session, display_sequence_id: int):
 
     return scores
 
-#Function to retrieve total score of all rounds for each user
-def calculate_total_scores(db: Session, display_sequence_id: int):
-    total_scores = []
-    
-    # Get all distinct user_ids for the given display_sequence_id
-    user_ids = db.query(models.Score.user_id)\
-                 .filter(models.Score.display_sequence_id == display_sequence_id)\
-                 .distinct()\
-                 .all()
-    
-    for row in user_ids:
-        user_id = row.user_id  # Extract the user_id from the Row object
-
-        # Get the user's name
-        user = db.query(models.User)\
-                 .filter(models.User.id == user_id)\
-                 .first()
-        
-        # Get the total scores for the user
-        scores = db.query(models.Score)\
-                   .filter(models.Score.user_id == user_id)\
-                   .all()
-        
-        # Calculate the total incorrect_guesses and correct_guesses
-        total_incorrect_guesses = sum(score.incorrect_guesses for score in scores)
-        total_correct_guesses = sum(score.correct_guesses for score in scores)
-        
-        # Append the user's information and total scores to the list
-        total_scores.append({
-            'user_id': user_id,
-            'player_name': user.player_name,
-            'total_incorrect_guesses': total_incorrect_guesses,
-            'total_correct_guesses': total_correct_guesses
-        })
-    
-    return total_scores
+#Function to retrieve total score of all rounds for each user of a given game
+def calculate_total_scores(db: Session, game_id: int):
+    #get all users in the game
+    users = db.query(models.User)\
+              .filter(models.User.game_id == game_id)\
+              .all()
+    #get all scores for all display sequences in the game
+    scores = db.query(models.Score)\
+               .filter(models.Score.display_sequence_id.in_(
+                   db.query(models.DisplaySequence.id)\
+                   .filter(models.DisplaySequence.game_id == game_id)
+               ))\
+               .all()
+    #create a dictionary to store the scores
+    user_scores = {}
+    #initialize the dictionary with 0s
+    for user in users:
+        user_scores[user.id] = {"correct_guesses": 0, "incorrect_guesses": 0}
+    #update the dictionary with the scores
+    for score in scores:
+        user_scores[score.user_id]["correct_guesses"] += score.correct_guesses
+        user_scores[score.user_id]["incorrect_guesses"] += score.incorrect_guesses
+    #return the scores
+    return [schemas.TotalScore(user_id=user.id, player_name=user.player_name, total_correct_guesses=user_scores[user.id]["correct_guesses"], total_incorrect_guesses=user_scores[user.id]["incorrect_guesses"]) for user in users]
 
