@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: memory-game-api
+    runtime: python
+    repo: https://github.com/amirros66/Memory-Game-Back-End.git
+    region: frankfurt
+    plan: free
+    branch: main
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+      targetMemoryPercent: 60 # optional if targetCPUPercent is set
+      targetCPUPercent: 60 # optional if targetMemory is set
+    buildCommand: pipenv install
+    startCommand: pipenv run start
+    preDeployCommand: pipenv run migrate
+    healthCheckPath: /hello
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: memory-game-db
+          property: connectionString
+
+databases:
+  - name: memory-game-db
+    region: frankfurt
+    plan: free
+    databaseName: memory_game
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
