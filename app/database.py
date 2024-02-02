@@ -11,7 +11,8 @@ DATABASE_URL = os.environ.get(
     "DATABASE_URL") or "postgresql://postgres:secret@localhost:5432/postgres"
 
 # create SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL.replace(
+    "postgres://", "postgresql://"))
 
 # create SessionLocal class with sessionmaker
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
