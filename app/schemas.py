@@ -1,10 +1,11 @@
-from typing import Union
 from pydantic import BaseModel
 
+
 class UserBase(BaseModel):
-    player_name: str 
+    player_name: str
     id: int
-    
+
+
 class UserCreate(UserBase):
     pass
 
@@ -13,12 +14,16 @@ class DisplaySequenceBase(BaseModel):
     id: int
     value: str
 
+
 class InputSequenceBase(BaseModel):
     value: str
+
 
 class InputSequence(BaseModel):
     id: int
     value: str
+
+
 class InputSequenceCreate(InputSequenceBase):
     pass
 
@@ -31,6 +36,7 @@ class Game(BaseModel):
     id: int
     active: bool
 
+
 class NewGame(BaseModel):
     game_id: int
     user_id: int
@@ -38,19 +44,22 @@ class NewGame(BaseModel):
     sequences: list[DisplaySequenceBase]
 
 
-#Scores schemas
+# Scores schemas
 class UserScore(BaseModel):
     user_id: int
     correct_guesses: int
     incorrect_guesses: int
 
+
 class RoundScores(BaseModel):
     round_id: int
     scores: list[UserScore]
 
+
 class ScoreBase(BaseModel):
     correct_guesses: int
     incorrect_guesses: int
+
 
 class Score(ScoreBase):
     id: int
@@ -59,11 +68,11 @@ class Score(ScoreBase):
     input_sequence_id: int
 
 
-
-#Lobby user schemas
+# Lobby user schemas
 class LobbyUser(BaseModel):
     user_id: int
     player_name: str
+
 
 class TotalScore(BaseModel):
     user_id: int
@@ -72,8 +81,11 @@ class TotalScore(BaseModel):
     total_incorrect_guesses: int
 
 
-
 # Display sequence schemas
 class DisplaySequence(BaseModel):
     id: int
     value: str
+
+
+class Healthz(BaseModel):
+    status: str

@@ -11,8 +11,14 @@ fastapi = "*"
 sqlalchemy = "*"
 adjspecies3 = "*"
 uvicorn = {extras = ["standard"], version = "*"}
+python-dotenv = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.11"
+
+[scripts]
+start = "uvicorn main:app --host 0.0.0.0 --port ${PORT}"
+dev = "uvicorn main:app --reload"
+migrate = "alembic upgrade head"
