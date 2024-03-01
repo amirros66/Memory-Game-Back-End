@@ -7,7 +7,6 @@ from app.game import (create_user, create_sequence,
                       create_game, reset_game_data, get_display_sequences)
 from app.scores import calculate_score, store_score
 from app.sequences import add_sequences
-from app.sequences import add_input_sequences
 
 from app import database, schemas, scores, game
 
@@ -67,7 +66,7 @@ def read_active_game(db: Session = Depends(get_db)):
     else:
         return active_game
 
-# Create a game for three players
+# Create a game
 
 
 @app.post("/game", response_model=schemas.NewGame)
@@ -76,16 +75,6 @@ def create_new_game(db: Session = Depends(get_db)):
     new_user = create_user(db=db, game_id=new_game.id)
     new_sequences = add_sequences(db=db, game_id=new_game.id)
     return {"game_id": new_game.id, "user_id": new_user.id, "player_name": new_user.player_name, "sequences": new_sequences}
-
-
-#create a game for one player
-@app.post("/game/single", response_model=schemas.NewSingleGame)
-def create_new_single_game(db: Session = Depends(get_db)):
-    new_game = create_game(db=db)
-    new_user = create_user(db=db, game_id=new_game.id)
-    display_sequences = add_sequences(db=db, game_id=new_game.id)
-    input_sequences = add_input_sequences(db=db, game_id=new_game.id)
-    return {"game_id": new_game.id, "user_id": new_user.id, "player_name": new_user.player_name, "sequences": display_sequences, "input_sequences": input_sequences}
 
 
 # Get score for 1 round

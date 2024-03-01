@@ -42,13 +42,6 @@ class NewGame(BaseModel):
     user_id: int
     player_name: str
     sequences: list[DisplaySequenceBase]
-    
-class NewSingleGame(BaseModel):
-    game_id: int
-    user_id: int
-    player_name: str
-    display_sequences: list[DisplaySequenceBase]
-    input_sequences: list[InputSequenceBase]
 
 
 # Scores schemas
