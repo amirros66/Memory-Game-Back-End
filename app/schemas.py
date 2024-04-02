@@ -47,6 +47,7 @@ class NewGame(BaseModel):
 
 class NewSingleGame(BaseModel):
     game_id: int
+    single: bool
     
 # Scores schemas
 class UserScore(BaseModel):
