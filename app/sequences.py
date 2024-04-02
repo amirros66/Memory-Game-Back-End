@@ -17,12 +17,11 @@ def add_sequences(db: Session, game_id: int):
         db.commit()
     return db.query(models.DisplaySequence).all()
 
-def add_input_sequences(db: Session, game_id: int, user_id: int, display_sequences: List[models.DisplaySequence]):
+def add_input_sequences(db: Session, user_id: int, display_sequences: List[models.DisplaySequence]):
     for i, display_sequence in enumerate(display_sequences[:3]):
         x = 4 + 2 * i  
         db_sequence = models.InputSequence(
             value=generate_sequence(x),
-            game_id=game_id,
             user_id=user_id,
             display_sequence_id=display_sequence.id
         )

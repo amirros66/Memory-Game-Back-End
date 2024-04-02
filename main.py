@@ -138,7 +138,7 @@ def create_new_game(db: Session = Depends(get_db)):
     display_sequence_ids = [ds.id for ds in new_display_sequences[-2:]] 
     input_sequences = []
     for user, display_sequence_id in zip(users[-2:], display_sequence_ids):
-        new_sequences = add_input_sequences(db=db, game_id=new_game.id, user_id=user.id, display_sequences=new_display_sequences)
+        new_sequences = add_input_sequences(db=db,  user_id=user.id, display_sequences=new_display_sequences)
         input_sequences.append(new_sequences)
     return {
         "game_id": new_game.id,
