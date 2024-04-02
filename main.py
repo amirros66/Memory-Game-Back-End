@@ -134,16 +134,16 @@ def create_new_game(db: Session = Depends(get_db)):
     for _ in range(3):
         user = create_user(db=db, game_id=new_game.id)
         users.append(user)
-    sequences = []
-    for user in users[:2]: 
-        new_sequences = add_input_sequences(db=db, game_id=new_game.id, user_id=user.id, display_sequence_id=new_display_sequences.id)
-        sequences.append(new_sequences)
+    input_sequences = []
+    for user, display_sequence in zip(users[:2], new_display_sequences): 
+        new_sequences = add_input_sequences(db=db, game_id=new_game.id, user_id=user.id, display_sequences=new_display_sequences)
+        input_sequences.append(new_sequences)
     return {
         "game_id": new_game.id,
         "display_sequences": new_display_sequences,
         "users": [{
             "user_id": user.id,
             "player_name": user.player_name,
-            "sequences": sequences[i] if i < 2 else [] 
+            "sequences": input_sequences[i] if i < 2 else [] 
         } for i, user in enumerate(users)]
     }
