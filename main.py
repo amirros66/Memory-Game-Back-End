@@ -129,6 +129,7 @@ def healthz():
 @app.post("/single", response_model=schemas.NewSingleGame)
 def create_new_game(db: Session = Depends(get_db)):
     new_game = create_game(db=db)
+    new_game.single = True
     new_display_sequences = add_sequences(db=db, game_id=new_game.id)
     users = []
     for _ in range(3):
@@ -141,6 +142,7 @@ def create_new_game(db: Session = Depends(get_db)):
         input_sequences.append(new_sequences)
     return {
         "game_id": new_game.id,
+        "single": new_game.single,
         "display_sequences": new_display_sequences,
         "users": [{
             "user_id": user.id,
