@@ -21,6 +21,7 @@ class Game(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     active = Column(Boolean, default=True)
+    single = Column(Boolean, default=False)
     
     user = relationship("User", back_populates="game")
     display_sequence = relationship("DisplaySequence", back_populates="game")
