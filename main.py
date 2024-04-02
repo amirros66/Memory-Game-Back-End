@@ -126,32 +126,24 @@ def healthz():
 
 
 # Create single-player game
-@app.post("/single", response_model=schemas.NewGame)
+@app.post("/single", response_model=schemas.NewSingleGame)
 def create_new_game(db: Session = Depends(get_db)):
-    # Create a new game
     new_game = create_game(db=db)
-    
-    #Create display sequences
     new_display_sequences = add_sequences(db=db, game_id=new_game.id)
-
-    # Create three new users
     users = []
     for _ in range(3):
         user = create_user(db=db, game_id=new_game.id)
         users.append(user)
-    
-    # Add sequences for two users
     sequences = []
-    for user in users[:2]:  # Only add sequences for the first two users
+    for user in users[:2]: 
         new_sequences = add_input_sequences(db=db, game_id=new_game.id, user_id=user.id, display_sequence_id=new_display_sequences.id)
         sequences.append(new_sequences)
-    
     return {
         "game_id": new_game.id,
         "display_sequences": new_display_sequences,
         "users": [{
             "user_id": user.id,
             "player_name": user.player_name,
-            "sequences": sequences[i] if i < 2 else []  # Only include sequences for the first two users
+            "sequences": sequences[i] if i < 2 else [] 
         } for i, user in enumerate(users)]
     }

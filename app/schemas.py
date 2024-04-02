@@ -44,6 +44,12 @@ class NewGame(BaseModel):
     sequences: list[DisplaySequenceBase]
 
 
+class NewSingleGame(BaseModel):
+    game_id: int
+    users: list[UserBase]
+    display_sequence: list[DisplaySequenceBase]
+    input_sequences: list[InputSequenceBase]
+    
 # Scores schemas
 class UserScore(BaseModel):
     user_id: int
