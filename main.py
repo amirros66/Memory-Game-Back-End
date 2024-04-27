@@ -140,8 +140,6 @@ def create_new_game(db: Session = Depends(get_db)):
     for user, display_sequence_id in zip(users[-2:], display_sequence_ids):
         new_sequences = add_input_sequences(db=db, user_id=user.id, display_sequences=new_display_sequences)
         input_sequence = new_sequences[0]  
-        round_score = calculate_score(db, input_sequence)
-        store_score(db, round_score, user.id, display_sequence_id, input_sequence.id)
         input_sequences.append(input_sequence)
     return {
         "game_id": new_game.id,
