@@ -139,7 +139,7 @@ def create_new_game(db: Session = Depends(get_db)):
     for user in users[-2:]:
         new_sequences = add_input_sequences(db=db, user_id=user.id, display_sequences=new_display_sequences)
         input_sequences.extend(new_sequences)
-    for sequence in input_sequences:
+    for sequence in input_sequences[-6:]:
             round_score = calculate_score(db, sequence)
             store_score(db, round_score, user_id=sequence.user_id,
                     display_sequence_id=sequence.display_sequence_id, input_sequence_id=sequence.id)
@@ -150,6 +150,6 @@ def create_new_game(db: Session = Depends(get_db)):
         "users": [{
             "user_id": user.id,
             "player_name": user.player_name,
-            "sequences": input_sequences[i] if i < 2 else [] 
+            "sequences": input_sequences[i - len(users)] if i >= len(users) - 2 else [] 
         } for i, user in enumerate(users)]
     }
