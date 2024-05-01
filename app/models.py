@@ -21,6 +21,7 @@ class Game(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     active = Column(Boolean, default=True)
+    single = Column(Boolean, default=False)
     
     user = relationship("User", back_populates="game")
     display_sequence = relationship("DisplaySequence", back_populates="game")
@@ -44,7 +45,7 @@ class InputSequence(Base):
     value = Column(String)
     
     user_id = Column(Integer, ForeignKey("users.id"))
-    display_sequence_id = Column(Integer, ForeignKey("display_sequences.id"))   
+    display_sequence_id = Column(Integer, ForeignKey("display_sequences.id")) 
     
     user = relationship("User", back_populates="input_sequence")
     display_sequence = relationship("DisplaySequence", back_populates="input_sequence")

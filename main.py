@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.game import (create_user, create_sequence,
                       create_game, reset_game_data, get_display_sequences)
 from app.scores import calculate_score, store_score
-from app.sequences import add_sequences
+from app.sequences import add_sequences, add_input_sequences
 
 from app import database, schemas, scores, game
 
@@ -123,3 +123,33 @@ def read_display_sequences(game_id: int, db: Session = Depends(get_db)):
 @app.get("/healthz", response_model=schemas.Healthz)
 def healthz():
     return {"status": "ok"}
+
+
+# Create single-player game
+@app.post("/single", response_model=schemas.NewSingleGame)
+def create_new_game(db: Session = Depends(get_db)):
+    new_game = create_game(db=db)
+    new_game.single = True
+    new_display_sequences = add_sequences(db=db, game_id=new_game.id)
+    users = []
+    for _ in range(3):
+        user = create_user(db=db, game_id=new_game.id)
+        users.append(user)
+    input_sequences = []
+    for user in users[-2:]:
+        new_sequences = add_input_sequences(db=db, user_id=user.id, display_sequences=new_display_sequences)
+        input_sequences.extend(new_sequences)
+    for sequence in input_sequences[-6:]:
+            round_score = calculate_score(db, sequence)
+            store_score(db, round_score, user_id=sequence.user_id,
+                    display_sequence_id=sequence.display_sequence_id, input_sequence_id=sequence.id)
+    return {
+        "game_id": new_game.id,
+        "single": new_game.single,
+        "display_sequences": new_display_sequences,
+        "users": [{
+            "user_id": user.id,
+            "player_name": user.player_name,
+            "sequences": input_sequences[i - len(users)] if i >= len(users) - 2 else [] 
+        } for i, user in enumerate(users)]
+    }

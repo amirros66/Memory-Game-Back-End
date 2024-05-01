@@ -9,7 +9,14 @@ from alembic import context
 
 from app.models import Base
 
+from app.database import DATABASE_URL
+
+import os
+
 load_dotenv()
+
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL") or "postgresql://postgres:secret@localhost:5432/postgres"
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

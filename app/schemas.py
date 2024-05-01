@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional, List
 
 
 class UserBase(BaseModel):
@@ -44,6 +45,10 @@ class NewGame(BaseModel):
     sequences: list[DisplaySequenceBase]
 
 
+class NewSingleGame(BaseModel):
+    game_id: int
+    single: bool
+    
 # Scores schemas
 class UserScore(BaseModel):
     user_id: int
